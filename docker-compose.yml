@@ -1,0 +1,14 @@
+services:
+  inquisitor:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: inquisitor
+    network_mode: host
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    stdin_open: true
+    tty: true
+    entrypoint: /bin/bash
+    restart: on-failure
