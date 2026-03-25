@@ -12,6 +12,6 @@ delete:
 
 clean: delete
 
-re: clean build
+re: clean up
 
 .PHONY: up down build delete clean re

@@ -1,4 +1,4 @@
-package inquisitor
+package main
 
 import (
 	"fmt"

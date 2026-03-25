@@ -1,4 +1,4 @@
-package inquisitor
+package main
 
 func exec() error {
 	go signalHandler()
