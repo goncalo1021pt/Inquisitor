@@ -1,10 +1,37 @@
 services:
+  ftp-server:
+    image: garethflowers/ftp-server:latest
+    container_name: inq-ftp-server
+    environment:
+      FTP_USER: user
+      FTP_PASS: pass
+    networks:
+      lan:
+        ipv4_address: 10.10.10.10
+    restart: unless-stopped
+
+  ftp-victim:
+    image: debian:bookworm-slim
+    container_name: inq-ftp-victim
+    command: >
+      bash -c "apt-get update >/dev/null && apt-get install -y --no-install-recommends ftp lftp iproute2 iputils-ping >/dev/null && sleep infinity"
+    networks:
+      lan:
+        ipv4_address: 10.10.10.20
+    cap_add:
+      - NET_ADMIN
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
   inquisitor:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: inquisitor
-    network_mode: host
+    networks:
+      lan:
+        ipv4_address: 10.10.10.30
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -12,3 +39,10 @@ services:
     tty: true
     entrypoint: /bin/bash
     restart: on-failure
+
+networks:
+  lan:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24

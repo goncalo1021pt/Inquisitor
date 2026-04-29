@@ -2,12 +2,17 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
-	fmt.Println("Inquisitor - FTP Traffic Interceptor")
 	if err := parseArgs(); err != nil {
-		fmt.Printf("Error parsing arguments: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
 	}
-	exec()
+	fmt.Println("Inquisitor - ARP Poisoning + FTP Interceptor")
+	if err := exec(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
+	}
 }
